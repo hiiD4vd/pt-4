@@ -1,0 +1,114 @@
+/* Reset & Base Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none; /* Hide default cursor for custom cursor */
+}
+
+/* Typography Variables */
+:root {
+  --font-super: 'Syne', sans-serif;
+  --font-heading: 'Syncopate', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Colors */
+  --bg-primary: #0a0a0b;
+  --bg-secondary: #121214;
+  --bg-accent: #1e1e24;
+  
+  --text-primary: #f0f0f0;
+  --text-secondary: #a1a1aa;
+  
+  --accent: #2563eb;
+  --accent-light: #60a5fa;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Lenis Smooth Scroll Configuration */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Selection */
+::selection {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+/* Utilities */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 4vw;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-super {
+  font-family: var(--font-super);
+  font-size: clamp(3rem, 10vw, 15rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.title-lg {
+  font-size: clamp(2rem, 5vw, 6rem);
+  font-family: var(--font-super);
+  font-weight: 700;
+}
+
+/* Custom Cursor Component Styles */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.custom-cursor.hovered {
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  border: 1px solid #fff;
+}
+
+/* Animations */
+.reveal-text {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
