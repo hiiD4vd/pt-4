@@ -108,7 +108,23 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #fff;
 }
 
-/* Animations */
+/* Animations & Utilities */
+.line-mask {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.magnetic-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.magnetic {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .reveal-text {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }

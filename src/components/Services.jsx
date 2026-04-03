@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -12,6 +12,66 @@ const services = [
   { id: '04', title: 'Factory Installation', desc: 'End-to-end setup of molding infrastructure.' },
 ]
 
+const ServiceCard = ({ service }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const cardRef = useRef(null)
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    setMousePosition({ x, y })
+  }
+
+  return (
+    <div 
+      ref={cardRef}
+      className="hover-target"
+      onMouseMove={handleMouseMove}
+      style={{
+        width: '55vw',
+        minWidth: '450px',
+        height: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: '4rem',
+        border: '1px solid var(--border)',
+        backgroundColor: 'rgba(255,255,255,0.01)',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'border-color 0.4s ease'
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)' }}
+      onMouseLeave={(e) => { 
+        e.currentTarget.style.borderColor = 'var(--border)'
+        setMousePosition({ x: -1000, y: -1000 })
+      }}
+    >
+      {/* Interactive Spotlight Effect */}
+      <div 
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: `radial-gradient(circle 400px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.06), transparent 80%)`,
+          pointerEvents: 'none',
+          transition: 'background 0.1s ease',
+          zIndex: 0
+        }}
+      />
+      
+      <div style={{ position: 'relative', zIndex: 1, fontSize: '4rem', fontFamily: 'var(--font-super)', color: 'rgba(255,255,255,0.1)' }}>
+        {service.id}
+      </div>
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <h3 style={{ fontSize: '3rem', marginBottom: '1rem', fontFamily: 'var(--font-heading)', lineHeight: 1.1 }}>{service.title}</h3>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '80%' }}>{service.desc}</p>
+      </div>
+    </div>
+  )
+}
+
 const Services = () => {
   const containerRef = useRef(null)
   const horizontalRef = useRef(null)
@@ -20,8 +80,7 @@ const Services = () => {
     target: containerRef,
   })
 
-  // Horizontal scroll transformation
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"])
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]) // adjust based on item count
 
   return (
     <section 
@@ -38,8 +97,10 @@ const Services = () => {
           overflow: 'hidden' 
         }}
       >
-        <div className="container" style={{ position: 'absolute', top: '10vh', left: 0, width: '100%' }}>
-          <h2 style={{ fontSize: '1rem', color: 'var(--accent)', letterSpacing: '0.2em' }}>CAPABILITIES</h2>
+        <div className="container" style={{ position: 'absolute', top: '15vh', left: 0, width: '100%' }}>
+          <h2 style={{ fontSize: '1rem', color: 'var(--text-secondary)', letterSpacing: '0.3em', textTransform: 'uppercase' }}>
+            Core Capabilities
+          </h2>
         </div>
 
         <motion.div 
@@ -47,41 +108,13 @@ const Services = () => {
           style={{ 
             x, 
             display: 'flex', 
-            gap: '10vw', 
-            padding: '0 4vw',
-            width: '400vw'
+            gap: '8vw', 
+            padding: '0 10vw',
+            width: 'max-content'
           }}
         >
-          {services.map((service, index) => (
-            <div 
-              key={service.id} 
-              className="hover-target"
-              style={{
-                width: '60vw',
-                minWidth: '400px',
-                height: '50vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: '3rem',
-                border: '1px solid var(--border)',
-                backgroundColor: 'rgba(255,255,255,0.02)',
-                backdropFilter: 'blur(10px)',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'background-color 0.3s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)'}
-            >
-              <div style={{ fontSize: '4rem', fontFamily: 'var(--font-super)', color: 'rgba(255,255,255,0.1)' }}>
-                {service.id}
-              </div>
-              <div>
-                <h3 style={{ fontSize: '2.5rem', marginBottom: '1rem', fontFamily: 'var(--font-super)', lineHeight: 1.1 }}>{service.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }}>{service.desc}</p>
-              </div>
-            </div>
+          {services.map((service) => (
+            <ServiceCard key={service.id} service={service} />
           ))}
         </motion.div>
       </div>
