@@ -19,6 +19,7 @@ const Hero = () => {
       ref={containerRef} 
       style={{ height: '100vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
+      <div className="crt-grid" />
       <motion.div 
         style={{ 
           position: 'absolute', 
@@ -95,13 +96,29 @@ const Hero = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1, delay: 1.2 }}
                   style={{ 
-                    display: 'flex', alignItems: 'center', gap: '1.5rem', 
-                    fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' 
+                    display: 'flex', alignItems: 'center', position: 'relative', width: '120px', height: '120px'
                   }}
                   className="magnetic-wrap"
                 >
-                  <span style={{ pointerEvents: 'none' }}>Scroll</span>
-                  <div className="magnetic" style={{ padding: '1rem' }}>
+                  <motion.div 
+                    className="magnetic" 
+                    style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+                      style={{ position: 'absolute', inset: 0, opacity: 0.4 }}
+                    >
+                      <svg viewBox="0 0 100 100" width="100%" height="100%">
+                        <path id="circlePath" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" fill="none" />
+                        <text fontSize="11" letterSpacing="0.2em" fill="var(--text-primary)" style={{ fontFamily: 'var(--font-heading)' }}>
+                          <textPath href="#circlePath" startOffset="0%">
+                            SCROLL DOWN • DISCOVER MORE •
+                          </textPath>
+                        </text>
+                      </svg>
+                    </motion.div>
+                    
                     <motion.div
                       animate={{ y: [0, 8, 0] }}
                       transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
@@ -114,7 +131,7 @@ const Hero = () => {
                     >
                       <ArrowDownRight size={20} color="var(--text-primary)" />
                     </motion.div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>

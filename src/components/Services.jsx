@@ -54,12 +54,15 @@ const ServiceCard = ({ service }) => {
         style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle 400px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.06), transparent 80%)`,
+          background: `radial-gradient(circle 600px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255,255,255,0.08), transparent 40%)`,
           pointerEvents: 'none',
           transition: 'background 0.1s ease',
           zIndex: 0
         }}
       />
+      {/* Decorative corner accents */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '20px', height: '20px', borderTop: '2px solid var(--accent)', borderLeft: '2px solid var(--accent)', opacity: 0.5 }} />
+      <div style={{ position: 'absolute', bottom: 0, right: 0, width: '20px', height: '20px', borderBottom: '2px solid var(--accent)', borderRight: '2px solid var(--accent)', opacity: 0.5 }} />
       
       <div style={{ position: 'relative', zIndex: 1, fontSize: '4rem', fontFamily: 'var(--font-super)', color: 'rgba(255,255,255,0.1)' }}>
         {service.id}
@@ -105,6 +108,7 @@ const Services = () => {
 
         <motion.div 
           ref={horizontalRef}
+          data-cursor="DRAG"
           style={{ 
             x, 
             display: 'flex', 

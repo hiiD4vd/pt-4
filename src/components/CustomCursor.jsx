@@ -3,10 +3,13 @@ import gsap from 'gsap'
 
 const CustomCursor = () => {
   const cursorRef = useRef(null)
+  const dotRef = useRef(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [cursorText, setCursorText] = useState('')
 
   useEffect(() => {
     const cursor = cursorRef.current
+    const dot = dotRef.current
     if (!cursor) return
 
     let mouseX = window.innerWidth / 2;
@@ -25,6 +28,10 @@ const CustomCursor = () => {
       cursorY += (mouseY - cursorY) * speed;
       
       cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+      if (dot) {
+        // dot follows exactly
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
       requestAnimationFrame(render);
     }
 
@@ -36,10 +43,14 @@ const CustomCursor = () => {
     
     const handleMouseEnter = (e) => {
       setIsHovered(true)
+      if (e.currentTarget.dataset.cursor) {
+        setCursorText(e.currentTarget.dataset.cursor)
+      }
     }
 
     const handleMouseLeave = (e) => {
       setIsHovered(false)
+      setCursorText('')
       const magneticEl = e.currentTarget.querySelector('.magnetic')
       if (magneticEl) {
         gsap.to(magneticEl, {
@@ -80,8 +91,15 @@ const CustomCursor = () => {
     const globalMouseOver = (e) => {
       if (e.target.closest('a, button, input, .hover-target, .magnetic-wrap')) {
          setIsHovered(true)
+         const targetWithCursor = e.target.closest('[data-cursor]')
+         if (targetWithCursor) {
+            setCursorText(targetWithCursor.dataset.cursor)
+         } else {
+            setCursorText('')
+         }
       } else {
          setIsHovered(false)
+         setCursorText('')
       }
     }
     window.addEventListener('mouseover', globalMouseOver)
@@ -100,10 +118,15 @@ const CustomCursor = () => {
   }, [])
 
   return (
-    <div 
-      ref={cursorRef} 
-      className={`custom-cursor ${isHovered ? 'hovered' : ''}`}
-    />
+    <>
+      <div 
+        ref={cursorRef} 
+        className={`custom-cursor ${isHovered ? 'hovered' : ''} ${cursorText ? 'has-text' : ''}`}
+      >
+        <span className="cursor-text">{cursorText}</span>
+      </div>
+      <div ref={dotRef} className="cursor-dot" />
+    </>
   )
 }
 

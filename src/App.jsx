@@ -8,6 +8,7 @@ import About from './components/About'
 import Services from './components/Services'
 import Showcase from './components/Showcase'
 import Footer from './components/Footer'
+import Header from './components/Header'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -46,6 +47,7 @@ function App() {
       <NoiseOverlay />
       <CustomCursor />
       <div className="main-wrapper" style={{ position: 'relative', zIndex: 1, backgroundColor: 'var(--bg-primary)' }}>
+        <Header />
         <Hero />
         <About />
         <Services />
